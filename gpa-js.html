@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple GPA Calculator</title>
+    <script>
+    // (A) SCORE SHEET & SUBJECTS
+    var scores = {
+      Distinction: 11,
+      A: 4, A_Minus: 3.6, B_Plus: 3.3, B: 3, B_Minus: 2.7, C_Plus: 2.3, C: 2, C_Minus: 1.7, D_Plus: 1.3, D: 1, F: 0
+    };
+    var subjects = [
+      "Subject 1", "Subject 2", "Subject 3", "Subject 4", "Subject 5", "Subject 6"
+    ];
+
+    // (B) DRAW HTML
+    window.addEventListener("load", () => {
+      let wrapper = document.getElementById("gpa-wrap"),
+          table = document.createElement("table"),
+          row = table.insertRow(),
+          cell = null, selector = null, option = null;
+
+      for (let s of subjects) {
+        cell = row.insertCell();
+        cell.innerHTML = s;
+        cell = row.insertCell();
+        selector = document.createElement("select");
+        cell.appendChild(selector);
+        for (let grade in scores) {
+          option = document.createElement("option");
+          option.innerHTML = grade;
+          option.value = scores[grade];
+          selector.appendChild(option);
+          selector.onchange = gpacalc;
+        }
+        row = table.insertRow();
+      }
+      wrapper.appendChild(table);
+    });
+
+    // (C) CALCULATE FUNCTION
+    var gpacalc = () => {
+      
+      let all = document.querySelectorAll("#gpa-wrap select"),
+          score = 0;
+      for (let i of all) {
+        score += parseInt(i.value);
+      }
+      document.getElementById("gpa-total").innerHTML = score;
+      document.getElementById("gpa-average").innerHTML = score / all.length;
+    };
+    </script>
+    <style>
+    #gpa-wrap table {
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    #gpa-wrap table tr:nth-child(odd) { background: #f2f2f2; }
+    #gpa-wrap table tr td { padding: 10px; }
+    </style>
+  </head>
+  <body>
+    <!-- (B) HTML -->
+    <div id="gpa-wrap"></div>
+    <div>
+      Total Points: <span id="gpa-total">0</span>
+    </div>
+    <div>
+      GPA: <span id="gpa-average">0</span>
+    </div>
+  </body>
+</html>
